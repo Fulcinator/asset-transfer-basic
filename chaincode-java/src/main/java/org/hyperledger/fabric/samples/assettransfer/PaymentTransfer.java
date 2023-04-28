@@ -43,8 +43,13 @@ public final class PaymentTransfer implements ContractInterface {
     public void InitLedger(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
 
+        DateTime date1 = new DateTime(1996, 10, 20, 12, 30);
+
+        CreatePayment(ctx, "payment1", "ordine1", date1, "Carta",
+                30.0, "hhtp://www.google.com", "de");
+        CreatePayment(ctx, "payment2", "ordine1", date1, "Contanti",
+                50.0, "hhtp://www.google.com", "de");
         /*
-         * CreatePayment(ctx, "payment1", "blue", 5, "Tomoko", 300);
          * CreatePayment(ctx, "payment2", "red", 5, "Brad", 400);
          * CreatePayment(ctx, "payment3", "green", 10, "Jin Soo", 500);
          * CreatePayment(ctx, "payment4", "yellow", 10, "Max", 600);
