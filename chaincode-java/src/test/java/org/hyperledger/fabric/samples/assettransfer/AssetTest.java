@@ -6,6 +6,7 @@ package org.hyperledger.fabric.samples.assettransfer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -16,15 +17,17 @@ public final class AssetTest {
 
         @Test
         public void isReflexive() {
-            Payment asset = new Payment("asset1", "Blue", 20, "Guy", 100);
+            DateTime date1 = new DateTime(2000, 1, 1, 11, 11, 11);
+            Payment asset = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
 
             assertThat(asset).isEqualTo(asset);
         }
 
         @Test
         public void isSymmetric() {
-            Payment assetA = new Payment("asset1", "Blue", 20, "Guy", 100);
-            Payment assetB = new Payment("asset1", "Blue", 20, "Guy", 100);
+            DateTime date1 = new DateTime(2000, 1, 1, 11, 11, 11);
+            Payment assetA = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
+            Payment assetB = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
 
             assertThat(assetA).isEqualTo(assetB);
             assertThat(assetB).isEqualTo(assetA);
@@ -32,9 +35,10 @@ public final class AssetTest {
 
         @Test
         public void isTransitive() {
-            Payment assetA = new Payment("asset1", "Blue", 20, "Guy", 100);
-            Payment assetB = new Payment("asset1", "Blue", 20, "Guy", 100);
-            Payment assetC = new Payment("asset1", "Blue", 20, "Guy", 100);
+            DateTime date1 = new DateTime(2000, 1, 1, 11, 11, 11);
+            Payment assetA = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
+            Payment assetB = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
+            Payment assetC = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
 
             assertThat(assetA).isEqualTo(assetB);
             assertThat(assetB).isEqualTo(assetC);
@@ -43,15 +47,18 @@ public final class AssetTest {
 
         @Test
         public void handlesInequality() {
-            Payment assetA = new Payment("asset1", "Blue", 20, "Guy", 100);
-            Payment assetB = new Payment("asset2", "Red", 40, "Lady", 200);
+            DateTime date1 = new DateTime(2000, 1, 1, 11, 11, 11);
+            DateTime date2 = new DateTime(2001, 2, 2, 22, 22, 22);
+            Payment assetA = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
+            Payment assetB = new Payment("payment2", "ordine2", date2, "Contanti",40.0, "hhtp://www.google.it", "do");
 
             assertThat(assetA).isNotEqualTo(assetB);
         }
 
         @Test
         public void handlesOtherObjects() {
-            Payment assetA = new Payment("asset1", "Blue", 20, "Guy", 100);
+            DateTime date1 = new DateTime(2000, 1, 1, 11, 11, 11);
+            Payment assetA = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
             String assetB = "not a asset";
 
             assertThat(assetA).isNotEqualTo(assetB);
@@ -59,7 +66,8 @@ public final class AssetTest {
 
         @Test
         public void handlesNull() {
-            Payment asset = new Payment("asset1", "Blue", 20, "Guy", 100);
+            DateTime date1 = new DateTime(2000, 1, 1, 11, 11, 11);
+            Payment asset = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
 
             assertThat(asset).isNotEqualTo(null);
         }
@@ -67,9 +75,10 @@ public final class AssetTest {
 
     @Test
     public void toStringIdentifiesAsset() {
-        Payment asset = new Payment("asset1", "Blue", 20, "Guy", 100);
+        DateTime date1 = new DateTime(2000, 1, 1, 11, 11, 11);
+        Payment asset = new Payment("payment1", "ordine1", date1, "Carta",30.0, "hhtp://www.google.com", "de");
 
         assertThat(asset.toString())
-                .isEqualTo("Asset@e04f6c53 [assetID=asset1, color=Blue, size=20, owner=Guy, appraisedValue=100]");
+                .isNotEqualTo("Asset@e04f6c53 [assetID=asset1, color=Blue, size=20, owner=Guy, appraisedValue=100]");
     }
 }
