@@ -78,6 +78,8 @@ async function main(): Promise<void> {
         // Create a new payment on the ledger.
         await createPayment(contract);
 
+        await getAllPayments(contract);
+
         // Update an existing payment asynchronously.
         await transferPaymentAsync(contract);
 
