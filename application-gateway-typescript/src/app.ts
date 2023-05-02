@@ -149,12 +149,18 @@ async function getAllPayments(contract: Contract): Promise<void> {
 async function createPayment(contract: Contract): Promise<void> {
     console.log('\n--> Submit Transaction: CreatePayment, creates new payment with ID, Color, Size, Owner and AppraisedValue arguments');
 
+    const date : Date = new Date(2023,5,2,0,0,0,0)
+
+    console.log(`to ISO String ${date.toISOString()}`);
+    console.log(`to UTC String ${date.toUTCString()}`);
+    console.log(`simple to String ${date.toString()}`);
+
     await contract.submitTransaction(
         'CreatePayment',
         paymentId,
         'ordine15',
         'contanti',
-        Date.now().toString(),
+        array,
         'Tomoko.com',
         'Tomoko',
         '3000',
