@@ -72,11 +72,11 @@ async function main(): Promise<void> {
         // Initialize a set of payment data on the ledger using the chaincode 'InitLedger' function.
         await initLedger(contract);
 
-        // Return all the current payments on the ledger.
-        await getAllPayments(contract);
-
         // Create a new payment on the ledger.
         await createPayment(contract);
+
+        // Return all the current payments on the ledger.
+        await getAllPayments(contract);
 
         // Update an existing payment asynchronously.
         await transferPaymentAsync(contract);
