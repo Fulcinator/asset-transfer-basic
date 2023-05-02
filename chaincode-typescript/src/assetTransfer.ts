@@ -82,7 +82,7 @@ export class PaymentTransferContract extends Contract {
 
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
-    public async CreatePayment(ctx: Context, paymentID: string, orderID: string, paymentType: string, paymentDate:Date, uri: string, hash: string, total: number): Promise<void> {
+    public async CreatePayment(ctx: Context, paymentID: string, orderID: string, paymentType: string, paymentDate:String, uri: string, hash: string, total: number): Promise<void> {
         const exists = await this.PaymentExists(ctx, paymentID);
         if (exists) {
             throw new Error(`The asset ${paymentID} already exists`);
@@ -113,7 +113,7 @@ export class PaymentTransferContract extends Contract {
 
     // UpdateAsset updates an existing asset in the world state with provided parameters.
     @Transaction()
-    public async UpdatePayment(ctx: Context, paymentID: string, orderID: string, paymentType: string, paymentDate:Date, uri: string, hash: string, total: number): Promise<void> {
+    public async UpdatePayment(ctx: Context, paymentID: string, orderID: string, paymentType: string, paymentDate:String, uri: string, hash: string, total: number): Promise<void> {
         const exists = await this.PaymentExists(ctx, paymentID);
         if (!exists) {
             throw new Error(`The asset ${paymentID} does not exist`);
