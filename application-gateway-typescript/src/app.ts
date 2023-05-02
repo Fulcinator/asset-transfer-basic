@@ -160,7 +160,7 @@ async function createPayment(contract: Contract): Promise<void> {
         paymentId,
         'ordine15',
         'contanti',
-        array,
+        date.toString(),
         'Tomoko.com',
         'Tomoko',
         '3000',
