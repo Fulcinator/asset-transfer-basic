@@ -155,6 +155,7 @@ async function getAllSubjects(contract: Contract): Promise<void> {
     const array =[];
     for(let i = 0; i < parsed.length; i++){
         const elem = parsed[i];
+        console.log(elem);
 
         if(Object.keys(elem).includes('taxPayerID')){
             console.log('+++++++++ è un utente +++++++++');
