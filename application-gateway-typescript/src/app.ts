@@ -148,13 +148,17 @@ async function getAllSubjects(contract: Contract): Promise<void> {
 
     const parsed = JSON.parse(resultJson);
 
-    const x = Object.entries(parsed).filter( ([key]) => key.includes('taxPayerId'))
-
-    console.log('*** x:', x);
-
-    const result = Object.fromEntries(x);
+    const result = Object.fromEntries(Object.entries(parsed).filter( ([key]) => key.includes('taxPayerID')));
 
     console.log('*** Questi sono gli utenti:', result);
+
+    /*for(let i = 0; i < parsed.length; i++){
+        let elem = parsed[i];
+
+        if(Object.keys(elem).includes('taxPayerID'))
+    }
+
+    console.log('*** Questi altri sono gli utenti:', parsed);*/
 }
 
 /**
