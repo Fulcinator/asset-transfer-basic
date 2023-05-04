@@ -235,7 +235,7 @@ export class PaymentTransferContract extends Contract {
     // GetAllAssets returns all assets found in the world state.
     @Transaction(false)
     @Returns('string')
-    public async GetAllPayments(ctx: Context): Promise<string> {
+    public async GetAllAssets(ctx: Context): Promise<string> {
         const allResults = [];
         // range query with empty string for startKey and endKey does an open-ended query of all assets in the chaincode namespace.
         const iterator = await ctx.stub.getStateByRange('', '');

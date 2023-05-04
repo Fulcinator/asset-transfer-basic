@@ -72,13 +72,20 @@ async function main(): Promise<void> {
         // Initialize a set of payment data on the ledger using the chaincode 'InitLedger' function.
         await initLedger(contract);
 
-        // Return all the current payments on the ledger.
-        await getAllPayments(contract);
+        //Creo Aldo Giovanni e Giacomo.
+        await createSubject(contract, 'Aldo', 'A1');
+        await createSubject(contract, 'Giovanni', 'G1');
+        await createSubject(contract, 'Giacomo', 'G2');
 
         // Create a new payment on the ledger.
         await createPayment(contract);
 
         await getAllPayments(contract);
+
+        console.log('****************************************');
+        console.log('VEDIAMO SE DIFFERENZIA GLI OGGETTI');
+        console.log('****************************************');
+        await getAllSubjects(contract);
 
         // Update an existing payment asynchronously.
         await transferPaymentAsync(contract);
@@ -132,13 +139,43 @@ async function initLedger(contract: Contract): Promise<void> {
     console.log('*** Transaction committed successfully');
 }
 
+async function getAllSubjects(contract: Contract): Promise<void> {
+    console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current subjects on the ledger');
+
+    const resultBytes = await contract.evaluateTransaction('GetAllSubjects');
+
+    const resultJson = utf8Decoder.decode(resultBytes);
+
+    const parsed = JSON.parse(resultJson);
+
+    const result = Object.fromEntries(Object.entries(parsed).filter( ([key]) => key.includes('taxPayerId')));
+
+    console.log('*** Result:', result);
+}
+
+/**
+ * Submit a transaction synchronously, blocking until it has been committed to the ledger.
+ */
+async function createSubject(contract: Contract, username : string, taxPayerID:string): Promise<void> {
+    console.log('\n--> Submit Transaction: CreatePayment, creates new payment with ID, Color, Size, Owner and AppraisedValue arguments');
+
+    await contract.submitTransaction(
+        'CreateSubjects',
+        `subject${Date.now()}`,
+        username,
+        taxPayerID
+    );
+
+    console.log('*** Transazione di creazione subject committed successfully');
+}
+
 /**
  * Evaluate a transaction to query ledger state.
  */
 async function getAllPayments(contract: Contract): Promise<void> {
-    console.log('\n--> Evaluate Transaction: GetAllPayments, function returns all the current payments on the ledger');
+    console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current payments on the ledger');
 
-    const resultBytes = await contract.evaluateTransaction('GetAllPayments');
+    const resultBytes = await contract.evaluateTransaction('GetAllAssets');
 
     const resultJson = utf8Decoder.decode(resultBytes);
     const result = JSON.parse(resultJson);
