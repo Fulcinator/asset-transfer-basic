@@ -6,6 +6,9 @@ import {Context, Contract, Info, Returns, Transaction} from 'fabric-contract-api
 import stringify from 'json-stringify-deterministic';
 import sortKeysRecursive from 'sort-keys-recursive';
 import {Payment} from './payment';
+import {Subject} from './subject';
+import {Order, ProductIdentifier, PaymentState} from './order';
+import {ProductInstance} from './productInstance';
 
 @Info({title: 'PaymentTransfer', description: 'Smart contract for trading payment'})
 export class PaymentTransferContract extends Contract {
@@ -80,6 +83,72 @@ export class PaymentTransferContract extends Contract {
         }
     }
 
+    //DEALING WITH SUBJECTS
+    @Transaction()
+    public async CreateSubjects(ctx: Context, userID: string, username: string, taxPayerID: string): Promise<void> {
+        const exists = await this.SubjectExists(ctx, userID);
+        if (exists) {
+            throw new Error(`The subject ${userID} already exists`);
+        }
+
+        const subject = {
+            userID: userID,
+            username: username,
+            taxPayerID: taxPayerID
+        };
+        // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+        await ctx.stub.putState(userID, Buffer.from(stringify(sortKeysRecursive(subject))));
+    }
+
+    // ReadSubject returns the subject stored in the world state with given id.
+    @Transaction(false)
+    public async ReadSubject(ctx: Context, id: string): Promise<string> {
+        const assetJSON = await ctx.stub.getState(id); // get the subject from chaincode state
+        if (!assetJSON || assetJSON.length === 0) {
+            throw new Error(`The asset ${id} does not exist`);
+        }
+        return assetJSON.toString();
+    }
+
+    // UpdateSubject updates an existing subject in the world state with provided parameters.
+    @Transaction()
+    public async UpdateSubject(ctx: Context, userID: string, username: string, taxPayerID: string): Promise<void> {
+        const exists = await this.SubjectExists(ctx, userID);
+        if (!exists) {
+            throw new Error(`The user ${userID} does not exist`);
+        }
+
+        // overwriting original user with new subject
+        const updatedSubject = {
+            userID: userID,
+            username: username,
+            taxPayerID: taxPayerID
+        };
+        // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+        return ctx.stub.putState(userID, Buffer.from(stringify(sortKeysRecursive(updatedSubject))));
+    }
+
+    // DeleteSubject deletes an given subjuect from the world state.
+    @Transaction()
+    public async DeleteSubject(ctx: Context, id: string): Promise<void> {
+        const exists = await this.SubjectExists(ctx, id);
+        if (!exists) {
+            throw new Error(`The subject ${id} does not exist`);
+        }
+        return ctx.stub.deleteState(id);
+    }
+
+    // SubjectExists returns true when asset that are actually subject with given ID exists in world state.
+    @Transaction(false)
+    @Returns('boolean')
+    public async SubjectExists(ctx: Context, id: string): Promise<boolean> {
+        const returnedJSON = await ctx.stub.getState(id);
+        return returnedJSON && returnedJSON.length > 0 && returnedJSON instanceof Subject;
+    }
+
+
+
+    // DEALING WITH THE PAYMENTS
     // CreateAsset issues a new asset to the world state with given details.
     @Transaction()
     public async CreatePayment(ctx: Context, paymentID: string, orderID: string, paymentType: string, paymentDate:String, uri: string, hash: string, total: number): Promise<void> {
