@@ -142,7 +142,7 @@ async function initLedger(contract: Contract): Promise<void> {
 async function getAllSubjects(contract: Contract): Promise<void> {
     console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current subjects on the ledger');
 
-    const resultBytes = await contract.evaluateTransaction('GetAllSubjects');
+    const resultBytes = await contract.evaluateTransaction('GetAllAssets');
 
     const resultJson = utf8Decoder.decode(resultBytes);
 
@@ -157,7 +157,7 @@ async function getAllSubjects(contract: Contract): Promise<void> {
  * Submit a transaction synchronously, blocking until it has been committed to the ledger.
  */
 async function createSubject(contract: Contract, username : string, taxPayerID:string): Promise<void> {
-    console.log('\n--> Submit Transaction: CreatePayment, creates new payment with ID, Color, Size, Owner and AppraisedValue arguments');
+    console.log(`\n--> Submit Transaction: CreateSubject, creates new user: ${username}`);
 
     await contract.submitTransaction(
         'CreateSubjects',
