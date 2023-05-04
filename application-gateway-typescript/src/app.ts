@@ -148,17 +148,21 @@ async function getAllSubjects(contract: Contract): Promise<void> {
 
     const parsed = JSON.parse(resultJson);
 
-    const result = Object.fromEntries(Object.entries(parsed).filter( ([key]) => key.includes('taxPayerID')));
+    //const result = Object.fromEntries(Object.entries(parsed).filter( ([key]) => key.includes('taxPayerID')));
 
-    console.log('*** Questi sono gli utenti:', result);
+    //console.log('*** Questi sono gli utenti:', result);
 
-    /*for(let i = 0; i < parsed.length; i++){
-        let elem = parsed[i];
+    const array =[];
+    for(let i = 0; i < parsed.length; i++){
+        const elem = parsed[i];
 
-        if(Object.keys(elem).includes('taxPayerID'))
+        if(Object.keys(elem).includes('taxPayerID')){
+            console.log('+++++++++ è un utente +++++++++');
+            array.push(elem);
+        }
     }
 
-    console.log('*** Questi altri sono gli utenti:', parsed);*/
+    console.log('*** Questi altri sono gli utenti:', array);
 }
 
 /**
